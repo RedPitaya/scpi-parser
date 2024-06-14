@@ -527,7 +527,7 @@ size_t SCPI_ResultUInt64Base(scpi_t * context, uint64_t val, int8_t base) {
  * @return
  */
 size_t SCPI_ResultFloat(scpi_t * context, float val) {
-    char buffer[32];
+    char buffer[128];
     size_t result = 0;
     size_t len = SCPI_FloatToStr(val, buffer, sizeof (buffer));
     result += writeDelimiter(context);
@@ -543,7 +543,7 @@ size_t SCPI_ResultFloat(scpi_t * context, float val) {
  * @return
  */
 size_t SCPI_ResultDouble(scpi_t * context, double val) {
-    char buffer[32];
+    char buffer[128];
     size_t result = 0;
     size_t len = SCPI_DoubleToStr(val, buffer, sizeof (buffer));
     result += writeDelimiter(context);
@@ -715,10 +715,10 @@ static size_t resultBufferFloatAscii(scpi_t * context, const float *data, size_t
     result += writeData(context, "{", 1);
 
     size_t i;
-    char buffer[32];
+    char buffer[128];
     int  ptr = 0;
     for (i = 0; i < size; i++) {
-        sprintf(buffer,"%f%s",data[i],(i < size-1 ? ",":""));
+        snprintf(buffer,128,"%f%s",data[i],(i < size-1 ? ",":""));
         result += writeData(context, buffer, strlen(buffer));
     }
     result += writeData(context, "}", 1);
