@@ -607,16 +607,7 @@ static size_t resultBufferUInt8Bin(scpi_t * context, const uint8_t *data, size_t
         return result;
     }
 
-    static const size_t pack_size = 0x20000;
-    size_t i;
-    uint8_t new_buff[pack_size];
-    for(size_t j = 0; j < size; j+= pack_size){
-        size_t send_size = (size - j) < pack_size ? (size - j) : pack_size;
-        for (i = 0; i < send_size; i++) {
-            new_buff[i] = htons((uint8_t) data[i + j]);
-        }
-        result += writeData(context, (char*)new_buff, sizeof(uint8_t) * send_size);
-    }
+    result += writeData(context, (char*)data, sizeof(uint8_t) * size);
     context->output_binary_count++;
     return result;
 }
